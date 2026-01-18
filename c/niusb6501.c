@@ -40,7 +40,8 @@ void dump_buffer(size_t len, const void *buffer)
 
 int niusb6501_is_success(size_t len, const void *buffer)
 {
-	static const char success_packet[8] = "\x00\x08\x01\x00\x00\x00\x00\x02";
+//	static const char success_packet[8] = "\x00\x08\x01\x00\x00\x00\x00\x02";
+	static const char success_packet[8] = {0x00,0x08,0x01,0x00,0x00,0x00,0x00,0x02};
 
 	if(len != sizeof success_packet)
 		return 0;
@@ -95,7 +96,7 @@ int niusb6501_send_request(struct usb_dev_handle *usb_handle, unsigned char cmd,
 	status = usb_bulk_write(
 		usb_handle,
 		EP_OUT,
-		buffer,
+		(const char *)buffer,
 		request_len+PACKET_HEADER_LEN+DATA_HEADER_LEN,
 		TIMEOUT
 	);
@@ -107,7 +108,7 @@ int niusb6501_send_request(struct usb_dev_handle *usb_handle, unsigned char cmd,
 	status = usb_bulk_read(
 		usb_handle,
 		EP_IN,
-		buffer,
+		(char *)buffer,
 		sizeof buffer,
 		TIMEOUT
 	);
@@ -220,7 +221,8 @@ int niusb6501_start_counter(struct usb_dev_handle *handle)
 {
 	unsigned char result[8];
 	size_t result_len = sizeof result;
-	static const unsigned char request[4] = "\x02\x20\x00\x00";
+//	static const unsigned char request[4] = "\x02\x20\x00\x00";
+	static const unsigned char request[4] = {0x02,0x20,0x00,0x00};
 	int status;
 
 	status = niusb6501_send_request(handle, 0x09, sizeof request, request, &result_len, result);
@@ -246,7 +248,8 @@ int niusb6501_stop_counter(struct usb_dev_handle *handle)
 {
 	unsigned char result[8];
 	size_t result_len = sizeof result;
-	static const unsigned char request[4] = "\x02\x20\x00\x00";
+//	static const unsigned char request[4] = "\x02\x20\x00\x00";
+	static const unsigned char request[4] = {0x02,0x20,0x00,0x00};
 	int status;
 
 	status = niusb6501_send_request(handle, 0x0c, sizeof request, request, &result_len, result);
@@ -276,7 +279,8 @@ int niusb6501_read_port(struct usb_dev_handle *handle, unsigned char port, unsig
 {
 	unsigned char result[12];
 	size_t result_len = sizeof result;
-	unsigned char request[8] = "\x02\x10\x00\x00\x00\x03\x00\x00";
+//	unsigned char request[8] = "\x02\x10\x00\x00\x00\x03\x00\x00";
+	unsigned char request[8] = {0x02,0x10,0x00,0x00,0x00,0x03,0x00,0x00};
 	int status;
 
 	request[6] = port;
@@ -310,7 +314,8 @@ int niusb6501_read_counter(struct usb_dev_handle *handle, unsigned long *value)
 {
 	unsigned char result[12];
 	size_t result_len = sizeof result;
-	unsigned char request[4] = "\x02\x20\x00\x00";
+//	unsigned char request[4] = "\x02\x20\x00\x00";
+	unsigned char request[4] = {0x02,0x20,0x00,0x00};
 	int status;
 
 	status = niusb6501_send_request(handle, 0x0e, sizeof request, request, &result_len, result);
@@ -344,7 +349,8 @@ int niusb6501_write_port(struct usb_dev_handle *handle, unsigned char port, unsi
 {
 	unsigned char result[8];
 	size_t result_len = sizeof result;
-	unsigned char request[12] = "\x02\x10\x00\x00\x00\x03\x00\x00\x03\x00\x00\x00";
+//	unsigned char request[12] = "\x02\x10\x00\x00\x00\x03\x00\x00\x03\x00\x00\x00";
+	unsigned char request[12] = {0x02,0x10,0x00,0x00,0x00,0x03,0x00,0x00,0x03,0x00,0x00,0x00};
 	int status;
 
 	request[6] = port;
@@ -376,7 +382,8 @@ int niusb6501_write_counter(struct usb_dev_handle *handle, unsigned long value)
 {
 	unsigned char result[8];
 	size_t result_len = sizeof result;
-	unsigned char request[8] = "\x02\x20\x00\x00\x00\x00\x00\x00";
+//	unsigned char request[8] = "\x02\x20\x00\x00\x00\x00\x00\x00";
+	unsigned char request[8] = {0x02,0x20,0x00,0x00,0x00,0x00,0x00,0x00};
 	int status;
 
 	request[4] = (value >> 24) & 0xff;
@@ -412,7 +419,8 @@ int niusb6501_set_io_mode(struct usb_dev_handle *handle, unsigned char port0, un
 {
 	unsigned char result[8];
 	size_t result_len = sizeof result;
-	unsigned char request[16] = "\x02\x10\x00\x00\x00\x05\x00\x00\x00\x00\x05\x00\x00\x00\x00\x00";
+//	unsigned char request[16] = "\x02\x10\x00\x00\x00\x05\x00\x00\x00\x00\x05\x00\x00\x00\x00\x00";
+	unsigned char request[16] = {0x02,0x10,0x00,0x00,0x00,0x05,0x00,0x00,0x00,0x00,0x05,0x00,0x00,0x00,0x00,0x00};
 	int status;
 
 	request[6] = port0;
