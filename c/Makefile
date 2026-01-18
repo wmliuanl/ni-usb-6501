@@ -9,7 +9,7 @@ demo: demo.o niusb6501.o
 	$(CC)   -o $@ $+ -lusb
 
 %.o: %.c
-	$(CC)   -o $@ -c $<
+	$(CC)  -O3 -o $@ -c $<
 
 clean:
 	$(RM) *.o $(TARGETS)
