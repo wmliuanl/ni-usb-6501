@@ -25,7 +25,7 @@ void counter_demo(struct usb_dev_handle *handle)
 			break;
 		}
 
-		printf("\e[1ACOUNTER: %08x\n", value);
+		printf("\e[1ACOUNTER: %08lx\n", value);
 
 		usleep(200*1000);
 	}
